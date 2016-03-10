@@ -3,7 +3,7 @@
     <string name="shortcut_name">ჩაწერის დაწყება</string>
     <string name="clear">წაშლა</string>
     <string name="record">ჩაწერა</string>
-    <string name="launch_overlay">ჩაწერის დაწყება</string>
+    <string name="launch_overlay">ჩაწერის დაწყება ფონურ რეჟიმში</string>
     <string name="preferences">პარამეტრები</string>
     <string name="countdown">უკუთვლა (3 წამი)</string>
     <string name="recents_hide">დაიმალოს უახლესი პროგრამების სიაში</string>
