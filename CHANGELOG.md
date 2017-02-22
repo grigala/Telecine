@@ -1,6 +1,51 @@
 Change Log
 ==========
 
+1.6.2 *(2016-06-21)*
+--------------------
+
+Internal:
+
+ * Add analytics events for quick tile.
+
+
+1.6.1 *(2016-06-19)*
+--------------------
+
+Internal:
+
+ * Remove `WAKE_LOCK` permission added from Google Play Services.
+
+
+1.6.0 *(2016-06-19)*
+--------------------
+
+Public:
+
+ * Added quick tile for launching the recording overlay (only available on Android N+).
+ * The recording overlay is now launched from the app using a floating action button.
+
+Internal:
+
+ * Switched from raster to vector icons.
+ * Use window insets to size overlay height.
+
+
+1.5.1 *(2016-04-03)*
+--------------------
+
+Public:
+
+ * Translations for Georgian & Norwegian, updated French & both Portugueses.
+ * Fix 'show touches' option persisting if recording crashes.
+
+Internal:
+
+ * Do not explicitly dismiss foreground notifications. Let service stop implicitly do it.
+ * Crash eagerly when media scan Uri is null.
+ * Do not attempt to record if output dir cannot be created when missing.
+
+
 1.5.0 *(2015-11-20)*
 --------------------
 

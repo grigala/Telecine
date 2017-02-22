@@ -1,32 +1,41 @@
 package com.jakewharton.telecine;
 
-import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ActivityManager.TaskDescription;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Spinner;
 import android.widget.Switch;
-import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.BindString;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
-import butterknife.OnLongClick;
 import com.google.android.gms.analytics.HitBuilders;
 import javax.inject.Inject;
 import timber.log.Timber;
 
-public final class TelecineActivity extends Activity {
-  @Bind(R.id.spinner_video_size_percentage) Spinner videoSizePercentageView;
-  @Bind(R.id.switch_show_countdown) Switch showCountdownView;
-  @Bind(R.id.switch_hide_from_recents) Switch hideFromRecentsView;
-  @Bind(R.id.switch_recording_notification) Switch recordingNotificationView;
-  @Bind(R.id.switch_show_touches) Switch showTouchesView;
+import static android.graphics.Bitmap.Config.ARGB_8888;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
+public final class TelecineActivity extends AppCompatActivity {
+  @BindView(R.id.spinner_video_size_percentage) Spinner videoSizePercentageView;
+  @BindView(R.id.switch_show_countdown) Switch showCountdownView;
+  @BindView(R.id.switch_hide_from_recents) Switch hideFromRecentsView;
+  @BindView(R.id.switch_recording_notification) Switch recordingNotificationView;
+  @BindView(R.id.switch_show_touches) Switch showTouchesView;
+  @BindView(R.id.container_use_demo_mode) View useDemoModeContainerView;
+  @BindView(R.id.switch_use_demo_mode) Switch useDemoModeView;
+  @BindView(R.id.launch) View launchView;
 
   @BindString(R.string.app_name) String appName;
   @BindColor(R.color.primary_normal) int primaryNormal;
@@ -36,23 +45,28 @@ public final class TelecineActivity extends Activity {
   @Inject @HideFromRecents BooleanPreference hideFromRecentsPreference;
   @Inject @RecordingNotification BooleanPreference recordingNotificationPreference;
   @Inject @ShowTouches BooleanPreference showTouchesPreference;
+  @Inject @UseDemoMode BooleanPreference useDemoModePreference;
 
   @Inject Analytics analytics;
 
   private VideoSizePercentageAdapter videoSizePercentageAdapter;
-  private int longClickCount;
+  private DemoModeHelper.ShowDemoModeSetting showDemoModeSetting;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    ((TelecineApplication) getApplication()).inject(this);
+    if ("true".equals(getIntent().getStringExtra("crash"))) {
+      throw new RuntimeException("Crash! Bang! Pow! This is only a test...");
+    }
+
+    ((TelecineApplication) getApplication()).injector().inject(this);
 
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
 
-    Resources res = getResources();
-    Bitmap taskIcon = BitmapFactory.decodeResource(res, R.drawable.ic_videocam_white_48dp);
-    setTaskDescription(new ActivityManager.TaskDescription(appName, taskIcon, primaryNormal));
+    CheatSheet.setup(launchView);
+
+    setTaskDescription(new TaskDescription(appName, rasterizeTaskIcon(), primaryNormal));
 
     videoSizePercentageAdapter = new VideoSizePercentageAdapter(this);
 
@@ -64,24 +78,37 @@ public final class TelecineActivity extends Activity {
     hideFromRecentsView.setChecked(hideFromRecentsPreference.get());
     recordingNotificationView.setChecked(recordingNotificationPreference.get());
     showTouchesView.setChecked(showTouchesPreference.get());
+    useDemoModeView.setChecked(useDemoModePreference.get());
+    showDemoModeSetting = new DemoModeHelper.ShowDemoModeSetting() {
+      @Override public void show() {
+        useDemoModeContainerView.setVisibility(VISIBLE);
+      }
+
+      @Override public void hide() {
+        useDemoModeView.setChecked(false);
+        useDemoModeContainerView.setVisibility(GONE);
+      }
+    };
+    DemoModeHelper.showDemoModeSetting(this, showDemoModeSetting);
+  }
+
+  @NonNull private Bitmap rasterizeTaskIcon() {
+    Drawable drawable = getResources().getDrawable(R.drawable.ic_videocam_white_24dp, getTheme());
+
+    ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+    int size = am.getLauncherLargeIconSize();
+    Bitmap icon = Bitmap.createBitmap(size, size, ARGB_8888);
+
+    Canvas canvas = new Canvas(icon);
+    drawable.setBounds(0, 0, size, size);
+    drawable.draw(canvas);
+
+    return icon;
   }
 
   @OnClick(R.id.launch) void onLaunchClicked() {
-    if (longClickCount > 0) {
-      longClickCount = 0;
-      Timber.d("Long click count reset.");
-    }
-
     Timber.d("Attempting to acquire permission to screen capture.");
     CaptureHelper.fireScreenCaptureIntent(this, analytics);
-  }
-
-  @OnLongClick(R.id.launch) boolean onLongClick() {
-    if (++longClickCount == 5) {
-      throw new RuntimeException("Crash! Bang! Pow! This is only a test...");
-    }
-    Timber.d("Long click count updated to %s", longClickCount);
-    return true;
   }
 
   @OnItemSelected(R.id.spinner_video_size_percentage) void onVideoSizePercentageSelected(
@@ -160,8 +187,24 @@ public final class TelecineActivity extends Activity {
     }
   }
 
+  @OnCheckedChanged(R.id.switch_use_demo_mode) void onUseDemoModeChanged() {
+    boolean newValue = useDemoModeView.isChecked();
+    boolean oldValue = useDemoModePreference.get();
+    if (newValue != oldValue) {
+      Timber.d("Use demo mode preference changing to %s", newValue);
+      useDemoModePreference.set(newValue);
+
+      analytics.send(new HitBuilders.EventBuilder() //
+          .setCategory(Analytics.CATEGORY_SETTINGS)
+          .setAction(Analytics.ACTION_CHANGE_SHOW_TOUCHES)
+          .setValue(newValue ? 1 : 0)
+          .build());
+    }
+  }
+
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (!CaptureHelper.handleActivityResult(this, requestCode, resultCode, data, analytics)) {
+    if (!CaptureHelper.handleActivityResult(this, requestCode, resultCode, data, analytics)
+        && !DemoModeHelper.handleActivityResult(this, requestCode, showDemoModeSetting)) {
       super.onActivityResult(requestCode, resultCode, data);
     }
   }

@@ -1,47 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TelecineActivity"
     >
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/content_padding"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:padding="@dimen/content_padding"
         >
-
-      <Button
-          android:id="@+id/launch"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingTop="24dp"
-          android:paddingBottom="24dp"
-          android:text="@string/launch_overlay"
-          />
 
       <TextView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="32dp"
           android:layout_marginBottom="8dp"
+          android:fontFamily="sans-serif-condensed"
           android:text="@string/preferences"
+          android:textAlignment="viewStart"
           android:textAllCaps="true"
           android:textColor="?android:attr/colorAccent"
-          android:fontFamily="sans-serif-condensed"
-          android:textAlignment="viewStart"
           />
 
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="@dimen/preference_height"
-          android:orientation="horizontal"
           android:gravity="center_vertical"
+          android:orientation="horizontal"
           >
         <TextView
             android:layout_width="0dp"
@@ -60,8 +53,8 @@
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="@dimen/preference_height"
-          android:orientation="horizontal"
           android:gravity="center_vertical"
+          android:orientation="horizontal"
           >
         <TextView
             android:layout_width="0dp"
@@ -80,8 +73,8 @@
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="@dimen/preference_height"
-          android:orientation="horizontal"
           android:gravity="center_vertical"
+          android:orientation="horizontal"
           >
         <TextView
             android:layout_width="0dp"
@@ -100,8 +93,8 @@
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="@dimen/preference_height"
-          android:orientation="horizontal"
           android:gravity="center_vertical"
+          android:orientation="horizontal"
           >
         <TextView
             android:layout_width="0dp"
@@ -120,8 +113,8 @@
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="@dimen/preference_height"
-          android:orientation="horizontal"
           android:gravity="center_vertical"
+          android:orientation="horizontal"
           >
         <TextView
             android:layout_width="0dp"
@@ -137,5 +130,38 @@
             />
       </LinearLayout>
 
+      <LinearLayout
+          android:id="@+id/container_use_demo_mode"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/preference_height"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:visibility="gone"
+          >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/use_demo_mode"
+            android:textAlignment="viewStart"
+            />
+        <Switch
+            android:id="@+id/switch_use_demo_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+      </LinearLayout>
+
     </LinearLayout>
-</ScrollView>
+  </ScrollView>
+
+  <android.support.design.widget.FloatingActionButton
+      android:id="@+id/launch"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|end"
+      android:layout_margin="16dp"
+      android:contentDescription="@string/launch_overlay"
+      android:src="@drawable/ic_videocam_white_24dp"
+      />
+</FrameLayout>

@@ -1,13 +1,12 @@
 // Manifest version information!
 def versionMajor = 1
-def versionMinor = 5
-def versionPatch = 0
+def versionMinor = 6
+def versionPatch = 2
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 buildscript {
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.5.0'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    classpath 'com.android.tools.build:gradle:2.2.3'
   }
 }
 
@@ -19,11 +18,10 @@ def getAnalyticsKey() {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion '23.0.2'
+  compileSdkVersion 25
+  buildToolsVersion '25.0.2'
 
   defaultConfig {
     applicationId 'com.jakewharton.telecine'
@@ -46,8 +44,13 @@ android {
   lintOptions {
     textReport true
     textOutput 'stdout'
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble tasks.
+    checkReleaseBuilds false
+
     warning 'MissingTranslation'
-    warning 'ResourceType' // TODO remove when updated to Butter Knife 8.0.
+    error 'UnusedResources'
+    error 'CheckResult'
   }
 
   dexOptions {
@@ -72,13 +75,16 @@ android {
 }
 
 dependencies {
-  compile 'com.android.support:support-annotations:23.1.0'
-  compile 'com.google.android.gms:play-services-analytics:7.5.0'
-  compile 'com.jakewharton:butterknife:7.0.1'
-  compile 'com.jakewharton.timber:timber:4.0.1'
-  compile 'com.bugsnag:bugsnag-android:3.2.5'
-  compile 'com.squareup.dagger:dagger:1.2.2'
-  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+  compile 'com.android.support:support-annotations:25.1.0'
+  compile 'com.android.support:design:25.1.0'
+  compile 'com.google.android.gms:play-services-analytics:10.0.1'
+  compile 'com.nightlynexus.demomode:demomode:0.1.1'
+  compile 'com.jakewharton:butterknife:8.4.0'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+  compile 'com.jakewharton.timber:timber:4.3.1'
+  compile 'com.bugsnag:bugsnag-android:3.7.0'
+  compile 'com.google.dagger:dagger:2.8'
+  annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
   testCompile 'junit:junit:4.12'
-  testCompile 'com.google.truth:truth:0.27'
+  testCompile 'com.google.truth:truth:0.30'
 }

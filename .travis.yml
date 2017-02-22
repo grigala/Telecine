@@ -1,15 +1,14 @@
 language: android
 
 jdk:
- - oraclejdk7
  - oraclejdk8
 
 android:
   components:
     - tools
     - platform-tools
-    - build-tools-23.0.2
-    - android-23
+    - build-tools-25.0.2
+    - android-25
     - extra-android-m2repository
     - extra-google-m2repository
 
@@ -25,6 +24,10 @@ notifications:
 
 sudo: false
 
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
 cache:
   directories:
     - $HOME/.gradle
+

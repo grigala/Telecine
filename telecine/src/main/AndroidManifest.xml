@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jakewharton.telecine"
     >
 
@@ -8,6 +10,11 @@
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" tools:node="remove" />
+  <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
+      tools:ignore="ProtectedPermissions"/>
+  <uses-permission android:name="android.permission.DUMP"
+      tools:ignore="ProtectedPermissions"/>
 
   <application
       android:allowBackup="true"
@@ -24,11 +31,14 @@
         <category android:name="android.intent.category.LAUNCHER"/>
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
+      <intent-filter>
+        <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES"/>
+      </intent-filter>
     </activity>
 
     <service android:name=".TelecineService"/>
 
-    <receiver android:name=".RecordingSession$DeleteRecordingBroadcastReceiver"/>
+    <receiver android:name=".DeleteRecordingBroadcastReceiver"/>
 
     <activity
         android:name=".TelecineShortcutConfigureActivity"
@@ -47,6 +57,16 @@
         android:taskAffinity=""
         android:exported="true"
         />
+
+    <service
+        android:icon="@drawable/ic_videocam_white_24dp"
+        android:label="@string/tile_name"
+        android:name=".TelecineTileService"
+        android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+      <intent-filter>
+        <action android:name="android.service.quicksettings.action.QS_TILE"/>
+      </intent-filter>
+    </service>
   </application>
 
 </manifest>
