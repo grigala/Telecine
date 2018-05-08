@@ -12,6 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.Switch;
+
+import com.google.android.gms.analytics.HitBuilders;
+
+import javax.inject.Inject;
+
 import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -19,9 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
-import com.google.android.gms.analytics.HitBuilders;
 import dagger.android.AndroidInjection;
-import javax.inject.Inject;
 import timber.log.Timber;
 
 import static android.graphics.Bitmap.Config.ARGB_8888;
@@ -109,6 +112,7 @@ public final class TelecineActivity extends AppCompatActivity {
   @OnClick(R.id.launch) void onLaunchClicked() {
     Timber.d("Attempting to acquire permission to screen capture.");
     CaptureHelper.fireScreenCaptureIntent(this, analytics);
+
   }
 
   @OnItemSelected(R.id.spinner_video_size_percentage) void onVideoSizePercentageSelected(

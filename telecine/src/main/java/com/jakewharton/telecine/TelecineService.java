@@ -39,6 +39,7 @@ public final class TelecineService extends Service {
     return intent;
   }
 
+
   @Inject @ShowCountdown Provider<Boolean> showCountdownProvider;
   @Inject @VideoSizePercentage Provider<Integer> videoSizePercentageProvider;
   @Inject @RecordingNotification Provider<Boolean> recordingNotificationProvider;
