@@ -20,6 +20,7 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import com.google.android.gms.analytics.HitBuilders;
+import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -53,13 +54,12 @@ public final class TelecineActivity extends AppCompatActivity {
   private DemoModeHelper.ShowDemoModeSetting showDemoModeSetting;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
+    AndroidInjection.inject(this);
     super.onCreate(savedInstanceState);
 
     if ("true".equals(getIntent().getStringExtra("crash"))) {
       throw new RuntimeException("Crash! Bang! Pow! This is only a test...");
     }
-
-    ((TelecineApplication) getApplication()).injector().inject(this);
 
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
@@ -196,7 +196,7 @@ public final class TelecineActivity extends AppCompatActivity {
 
       analytics.send(new HitBuilders.EventBuilder() //
           .setCategory(Analytics.CATEGORY_SETTINGS)
-          .setAction(Analytics.ACTION_CHANGE_SHOW_TOUCHES)
+          .setAction(Analytics.ACTION_CHANGE_USE_DEMO_MODE)
           .setValue(newValue ? 1 : 0)
           .build());
     }
