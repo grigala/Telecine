@@ -10,8 +10,6 @@ import android.os.IBinder
 import android.provider.Settings
 import android.support.v4.content.ContextCompat
 import ch.grigala.telecine.annotations.*
-import com.jakewharton.telecine.R
-import com.jakewharton.telecine.TelecineService
 import com.nightlynexus.demomode.*
 import dagger.android.AndroidInjection
 import timber.log.Timber

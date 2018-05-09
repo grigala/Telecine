@@ -2,7 +2,10 @@ package ch.grigala.telecine
 
 import android.content.SharedPreferences
 
-internal class IntPreference @JvmOverloads constructor(private val preferences: SharedPreferences, private val key: String, private val defaultValue: Int = 0) {
+internal class IntPreference @JvmOverloads constructor(
+        private val preferences: SharedPreferences,
+        private val key: String,
+        private val defaultValue: Int = 0) {
 
     val isSet: Boolean get() = preferences.contains(key)
 

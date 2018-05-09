@@ -7,7 +7,6 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
-import com.jakewharton.telecine.R
 import com.nightlynexus.demomode.DemoMode
 import com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.ENABLED
 import com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.FAILURE

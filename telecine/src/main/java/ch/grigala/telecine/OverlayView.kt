@@ -22,7 +22,6 @@ import butterknife.BindDimen
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.jakewharton.telecine.R
 import java.util.*
 
 @SuppressLint("ViewConstructor") // Lint, in this case, I am smarter than you.

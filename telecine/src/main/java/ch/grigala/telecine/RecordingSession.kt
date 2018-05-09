@@ -35,8 +35,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import com.google.android.gms.analytics.HitBuilders
-import com.jakewharton.telecine.DeleteRecordingBroadcastReceiver
-import com.jakewharton.telecine.R
 import timber.log.Timber
 import java.io.File
 import java.io.IOException

@@ -15,42 +15,50 @@ import android.widget.Switch
 import butterknife.*
 import ch.grigala.telecine.annotations.*
 import com.google.android.gms.analytics.HitBuilders
-import com.jakewharton.telecine.R
 import dagger.android.AndroidInjection
 import timber.log.Timber
 import javax.inject.Inject
 
 class TelecineActivity : AppCompatActivity() {
-    @BindView(R.id.spinner_video_size_percentage) internal var videoSizePercentageView: Spinner? = null
-    @BindView(R.id.switch_show_countdown) internal var showCountdownView: Switch? = null
-    @BindView(R.id.switch_hide_from_recents) internal var hideFromRecentsView: Switch? = null
-    @BindView(R.id.switch_recording_notification)internal var recordingNotificationView: Switch? = null
-    @BindView(R.id.switch_show_touches) internal var showTouchesView: Switch? = null
+    @BindView(R.id.spinner_video_size_percentage)
+    private var videoSizePercentageView: Spinner? = null
+    @BindView(R.id.switch_show_countdown)
+    private var showCountdownView: Switch? = null
+    @BindView(R.id.switch_hide_from_recents)
+    private var hideFromRecentsView: Switch? = null
+    @BindView(R.id.switch_recording_notification)
+    private var recordingNotificationView: Switch? = null
+    @BindView(R.id.switch_show_touches)
+    private var showTouchesView: Switch? = null
+    @BindView(R.id.launch)
+    private var launchView: View? = null
+
     @BindView(R.id.container_use_demo_mode) internal var useDemoModeContainerView: View? = null
     @BindView(R.id.switch_use_demo_mode) internal var useDemoModeView: Switch? = null
-    @BindView(R.id.launch) internal var launchView: View? = null
 
-    @BindString(R.string.app_name) internal var appName: String? = null
-    @BindColor(R.color.primary_normal) internal var primaryNormal: Int = 0
+    @BindString(R.string.app_name)
+    private var appName: String? = null
+    @BindColor(R.color.primary_normal)
+    private var primaryNormal: Int = 0
 
     @Inject
     @VideoSizePercentage
-    internal var videoSizePreference: IntPreference? = null
+    private var videoSizePreference: IntPreference? = null
     @Inject
     @ShowCountdown
-    internal var showCountdownPreference: BooleanPreference? = null
+    private var showCountdownPreference: BooleanPreference? = null
     @Inject
     @HideFromRecents
-    internal var hideFromRecentsPreference: BooleanPreference? = null
+    private var hideFromRecentsPreference: BooleanPreference? = null
     @Inject
     @RecordingNotification
-    internal var recordingNotificationPreference: BooleanPreference? = null
+    private var recordingNotificationPreference: BooleanPreference? = null
     @Inject
     @ShowTouches
-    internal var showTouchesPreference: BooleanPreference? = null
+    private var showTouchesPreference: BooleanPreference? = null
     @Inject
     @UseDemoMode
-    internal var useDemoModePreference: BooleanPreference? = null
+    private var useDemoModePreference: BooleanPreference? = null
 
     @Inject
     internal var analytics: Analytics? = null
