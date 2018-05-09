@@ -18,7 +18,7 @@ class TelecineApplication : Application(), HasActivityInjector, HasServiceInject
     private var dispatchingServiceInjector: DispatchingAndroidInjector<Service>? = null
 
     override fun onCreate() {
-        DaggerTelecineComponent.builder().application(this).build().inject(this)
+        //DaggerTelecineComponent.builder().application(this).build().inject(this)
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
